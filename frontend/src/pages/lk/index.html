@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Логос Гим - Платформа педагогических ресурсов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span class="logo-part1">ЛОГОС</span>
+                <span class="logo-part2">ГИМ</span>
+            </div>
+            <p class="logo-subtitle">Платформа педагогических ресурсов</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active" data-page="dashboard">Главная</a></li>
+                <li><a href="#" data-page="circles">Мои кружки</a></li>
+                <li><a href="#" data-page="grades">Успеваемость</a></li>
+                <li><a href="#" data-page="schedule">Расписание</a></li>
+                <li><a href="#" data-page="materials">Материалы</a></li>
+                <li><a href="#" data-page="messages">Сообщения</a></li>
+                <li><a href="#" data-page="portfolio">Портфолио</a></li>
+                <li><a href="#" data-page="settings">Настройки</a></li>
+            </ul>
+        </nav>
+        <div class="user-controls">
+            <div class="user-avatar" id="userAvatarBtn">
+                <i class="fas fa-user"></i>
+            </div>
+            <button id="logoutBtn" class="btn transparent-btn">Выход</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <aside class="sidebar">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <img id="avatarImg" src="./assets/images/avatarDefault.webp" alt="Аватар" />
+                        <div class="avatar-edit" id="editAvatarBtn">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </div>
+                    <h3 class="profile-name" id="userName">Иван Петров</h3>
+                    <span class="profile-role" id="userRole">Участник</span>
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="#" data-page="circles"><i class="fas fa-book-open"></i> Мои кружки</a></li>
+                    <li><a href="#" data-page="grades"><i class="fas fa-chart-line"></i> Успеваемость</a></li>
+                    <li><a href="#" data-page="schedule"><i class="fas fa-calendar-alt"></i> Расписание</a></li>
+                    <li><a href="#" data-page="materials"><i class="fas fa-file-alt"></i> Материалы</a></li>
+                    <li><a href="#" data-page="messages"><i class="fas fa-comments"></i> Сообщения</a></li>
+                    <li><a href="#" data-page="portfolio"><i class="fas fa-portrait"></i> Портфолио</a></li>
+                    <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
+                </ul>
+            </aside>
+            <div class="content" id="mainContent">
+                <!-- Основной контент -->
+                <div id="dashboardContent"></div>
+                <div id="otherContent" style="display: none;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальные окна -->
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Изменение аватарки</h2>
+            <div class="avatar-upload">
+                <div class="avatar-preview">
+                    <img id="avatarPreview" src="./assets/images/avatarDefault.webp" alt="Предпросмотр" />
+                </div>
+                <label for="avatarInput" class="upload-btn">
+                    <i class="fas fa-upload"></i> Загрузить фото
+                </label>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;" />
+            </div>
+            <div class="form-group">
+                <label for="userFullName">ФИО</label>
+                <input type="text" id="userFullName" class="form-control" />
+            </div>
+            <div class="form-actions">
+                <button class="btn transparent-btn close-modal-btn">Отмена</button>
+                <button class="btn gold-btn" id="saveProfileBtn">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления кружка -->
+    <div id="addCircleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Добавить новый кружок</h2>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="circleTitle">Название кружка</label>
+                    <input type="text" id="circleTitle" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="circleDescription">Описание</label>
+                    <textarea id="circleDescription" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="circleCategory">Категория</label>
+                        <select id="circleCategory" class="form-control" required></select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button class="btn gold-btn" id="addCircleSaveBtn">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

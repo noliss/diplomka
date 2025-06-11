@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Логос Гим - Платформа педагогических ресурсов</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="marble-background"></div>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span class="logo-part1">ЛОГОС</span>
+                <span class="logo-part2">ГИМ</span>
+            </div>
+            <p class="logo-subtitle">Платформа педагогических ресурсов</p>
+        </div>
+
+        <nav id="mainNav">
+            <ul>
+                <li><a href="#" class="active" data-page="home">Главная</a></li>
+                <li><a href="#" data-page="about">О платформе</a></li>
+                <li><a href="#" data-page="circles">Кружки</a></li>
+            </ul>
+        </nav>
+
+        <div class="auth-buttons" id="authButtons">
+            <button id="loginBtn" class="btn transparent-btn">Вход</button>
+            <button id="registerBtn" class="btn gold-btn">Регистрация</button>
+        </div>
+
+        <div class="user-controls" id="userControls" style="display: none;">
+            <div class="user-avatar" id="userAvatarBtn">
+                <i class="fas fa-user"></i>
+            </div>
+            <button id="logoutBtn" class="btn transparent-btn">Выход</button>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main id="mainContent">
+        <!-- Главная страница -->
+        <section id="homePage" class="page active-page">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Добро пожаловать в <span class="gold-text">Логос Гим</span></h1>
+                    <p>Инновационная платформа для организации педагогических кружков и внеурочной деятельности</p>
+                    <div class="hero-buttons">
+                        <button class="btn gold-btn" id="learnMoreBtn">Узнать больше</button>
+                        <button class="btn transparent-btn" id="viewCirclesBtn">Посмотреть кружки</button>
+                    </div>
+                </div>
+                <div class="floating-platforms">
+                    <div class="platform" style="--delay: 0s;">
+                        <i class="fas fa-book-open"></i>
+                        <p>Образовательные материалы</p>
+                    </div>
+                    <div class="platform" style="--delay: 0.5s;">
+                        <i class="fas fa-users"></i>
+                        <p>Педагогические кружки</p>
+                    </div>
+                    <div class="platform" style="--delay: 1s;">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Отслеживание прогресса</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- О платформе -->
+        <section id="aboutPage" class="page">
+            <div class="about-section">
+                <h2>О платформе</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>"Логос Гим" - это инновационная платформа, созданная для поддержки педагогических инициатив и организации внеурочной деятельности.</p>
+                        <p>Мы объединяем преподавателей и учащихся в рамках тематических кружков, предоставляя инструменты для эффективного взаимодействия и обучения.</p>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="circlesCount">50+</span>
+                                <span class="stat-label">Кружков</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="teachersCount">120+</span>
+                                <span class="stat-label">Преподавателей</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="studentsCount">2500+</span>
+                                <span class="stat-label">Участников</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="marble-frame">
+                            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350" alt="Обучение в кружке">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Кружки -->
+        <section id="circlesPage" class="page">
+            <div class="circles-section">
+                <h2>Наши кружки</h2>
+                <div class="filter-controls">
+                    <button class="filter-btn active">Все</button>
+                    <button class="filter-btn">Гуманитарные</button>
+                    <button class="filter-btn">Технические</button>
+                    <button class="filter-btn">Творческие</button>
+                    <button class="filter-btn">Спортивные</button>
+                </div>
+                <div class="circles-grid" id="circlesGrid">
+                    <!-- Кружки будут добавляться через JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Личный кабинет -->
+        <section id="dashboardPage" class="page">
+            <div class="container">
+                <aside class="sidebar">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img id="avatarImg" src="" alt="Аватар">
+                            <div class="avatar-edit" id="editAvatarBtn">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                        </div>
+                        <h3 class="profile-name" id="userName">Иван Петров</h3>
+                        <span class="profile-role" id="userRole">Участник</span>
+                    </div>
+
+                    <ul class="sidebar-menu" id="sidebarMenu">
+                        <!-- Меню будет заполняться через JS в зависимости от роли -->
+                    </ul>
+                </aside>
+
+                <div class="content" id="dashboardContent">
+                    <!-- Контент личного кабинета будет загружаться динамически -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Логос Гим</h3>
+                <p>Платформа педагогических ресурсов для организации кружковой деятельности</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p><i class="fas fa-envelope"></i> info@logosgim.ru</p>
+                <p><i class="fas fa-phone"></i> +7 (XXX) XXX-XX-XX</p>
+                <p><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Образовательная, 1</p>
+            </div>
+            <div class="footer-section">
+                <h3>Быстрые ссылки</h3>
+                <ul>
+                    <li><a href="#">Помощь</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Условия использования</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Логос Гим. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+
+    <!-- Модальное окно входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Вход в систему</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button type="submit" class="btn gold-btn">Войти</button>
+                </div>
+            </form>
+            <p class="form-footer">Нет аккаунта? <a href="#" id="switchToRegister">Зарегистрироваться</a></p>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regName">ФИО</label>
+                    <input type="text" id="regName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Пароль</label>
+                    <input type="password" id="regPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Подтвердите пароль</label>
+                    <input type="password" id="regConfirmPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regUserType">Я регистрируюсь как:</label>
+                    <select id="regUserType" class="form-control">
+                        <option value="student">Участник</option>
+                        <option value="admin">Администратор (требуется код доступа)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="adminCodeGroup" style="display: none;">
+                    <label for="adminCode">Код доступа администратора</label>
+                    <input type="text" id="adminCode" class="form-control">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button type="submit" class="btn gold-btn">Зарегистрироваться</button>
+                </div>
+            </form>
+            <p class="form-footer">Уже есть аккаунт? <a href="#" id="switchToLogin">Войти</a></p>
+        </div>
+    </div>
+
+    <!-- Модальное окно профиля -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Профиль пользователя</h2>
+            <div class="avatar-upload">
+                <div class="avatar-preview">
+                    <img id="avatarPreview" src="" alt="Предпросмотр">
+                </div>
+                <label for="avatarInput" class="upload-btn">
+                    <i class="fas fa-upload"></i> Загрузить фото
+                </label>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="form-group">
+                <label for="userFullName">ФИО</label>
+                <input type="text" id="userFullName" class="form-control">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">Телефон</label>
+                    <input type="tel" id="userPhone" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn transparent-btn close-modal-btn">Отмена</button>
+                <button class="btn gold-btn" id="saveProfileBtn">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно кружка -->
+    <div id="circleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="circleModalContent">
+                <!-- Контент будет заполнен через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно оценки -->
+    <div id="gradeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="gradeModalTitle">Добавить оценку</h2>
+            <form id="gradeForm">
+                <div class="form-group">
+                    <label for="gradeCircle">Кружок</label>
+                    <select id="gradeCircle" class="form-control" required>
+                        <!-- Заполнится через JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gradeStudent">Ученик</label>
+                    <select id="gradeStudent" class="form-control" required>
+                        <!-- Заполнится через JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gradeValue">Оценка</label>
+                    <input type="number" id="gradeValue" class="form-control" min="1" max="5" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="gradeComment">Комментарий</label>
+                    <textarea id="gradeComment" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button type="submit" class="btn gold-btn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно сообщения -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Новое сообщение</h2>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="messageRecipient">Получатель</label>
+                    <select id="messageRecipient" class="form-control" required>
+                        <!-- Заполнится через JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="messageSubject">Тема</label>
+                    <input type="text" id="messageSubject" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="messageText">Текст сообщения</label>
+                    <textarea id="messageText" class="form-control" rows="5" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button type="submit" class="btn gold-btn">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно материала -->
+    <div id="materialModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="materialModalTitle">Добавить материал</h2>
+            <form id="materialForm">
+                <div class="form-group">
+                    <label for="materialCircle">Кружок</label>
+                    <select id="materialCircle" class="form-control" required>
+                        <!-- Заполнится через JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="materialTitle">Название</label>
+                    <input type="text" id="materialTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="materialDescription">Описание</label>
+                    <textarea id="materialDescription" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="materialFile">Файл</label>
+                    <input type="file" id="materialFile" class="form-control">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn transparent-btn close-modal-btn">Отмена</button>
+                    <button type="submit" class="btn gold-btn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="toast" class="toast"></div>
+    <script src="script.js"></script>
+</body>
+</html>
