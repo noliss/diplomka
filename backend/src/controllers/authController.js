@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../models/User');
+const db = require('../models/db');
 const { handleValidationErrors, getVerifyTokenInfo } = require('../utils/helpers');
 
 // Регистрация пользователя
@@ -44,23 +44,25 @@ exports.login = (req, res) => {
 
     const { email, password } = req.body;
 
-    // Запрос к базе данных для получения пользователя по имени
     db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
         if (err || !user) {
-            return res.status(400).json([ { message: 'Неверные учетные данные' }]);
+            return res.status(400).json([{ message: 'Неверные учетные данные' }]);
         }
 
-        // Сравнение введенного пароля с хешем из базы данных
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
             return res.status(400).json([{ message: 'Неверные учетные данные' }]);
         }
+        
+        const token = jwt.sign(
+            { 
+                id: user.id,
+                role: user.role
+            }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '24h' }
+        );
 
-        // Создание токена JWT
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        // Возвращаем токен пользователю
-        // res.cookie('token', token, { httpOnly: true, secure: false, maxAge: 3600000 }); // Установите secure: true в продакшене
         return res.status(200).json({ token });
     });
 };

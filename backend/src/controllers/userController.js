@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const db = require('../models/User');
+const db = require('../models/db');
 const { handleValidationErrors, getVerifyTokenInfo } = require('../utils/helpers');
 
 // Обновление информации о пользователе 

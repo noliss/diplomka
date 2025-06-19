@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Логос Гим - Платформа педагогических ресурсов</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
@@ -21,13 +24,8 @@
         <nav>
             <ul>
                 <li><a href="#" class="active" data-page="dashboard">Главная</a></li>
-                <li><a href="#" data-page="circles">Мои кружки</a></li>
-                <li><a href="#" data-page="grades">Успеваемость</a></li>
-                <li><a href="#" data-page="schedule">Расписание</a></li>
+                <li><a href="#" data-page="circles">Кружки</a></li>
                 <li><a href="#" data-page="materials">Материалы</a></li>
-                <li><a href="#" data-page="messages">Сообщения</a></li>
-                <li><a href="#" data-page="portfolio">Портфолио</a></li>
-                <li><a href="#" data-page="settings">Настройки</a></li>
             </ul>
         </nav>
         <div class="user-controls">
@@ -51,16 +49,6 @@
                     <h3 class="profile-name" id="userName">Иван Петров</h3>
                     <span class="profile-role" id="userRole">Участник</span>
                 </div>
-                <ul class="sidebar-menu">
-                    <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Главная</a></li>
-                    <li><a href="#" data-page="circles"><i class="fas fa-book-open"></i> Мои кружки</a></li>
-                    <li><a href="#" data-page="grades"><i class="fas fa-chart-line"></i> Успеваемость</a></li>
-                    <li><a href="#" data-page="schedule"><i class="fas fa-calendar-alt"></i> Расписание</a></li>
-                    <li><a href="#" data-page="materials"><i class="fas fa-file-alt"></i> Материалы</a></li>
-                    <li><a href="#" data-page="messages"><i class="fas fa-comments"></i> Сообщения</a></li>
-                    <li><a href="#" data-page="portfolio"><i class="fas fa-portrait"></i> Портфолио</a></li>
-                    <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
-                </ul>
             </aside>
             <div class="content" id="mainContent">
                 <!-- Основной контент -->
@@ -69,6 +57,16 @@
             </div>
         </div>
     </main>
+
+    <!-- Модальное окно кружка -->
+    <div id="circleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="circleModalContent">
+                <!-- Контент будет заполнен через JS -->
+            </div>
+        </div>
+    </div>
 
     <!-- Модальные окна -->
     <div id="avatarModal" class="modal">
@@ -94,7 +92,24 @@
             </div>
         </div>
     </div>
-
+    <!-- Модальное окно администратора -->
+     <div id="membersModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3 id="modalTitle">Участники кружка</h3>
+        <table class="members-table">
+          <thead>
+            <tr>
+              <th>Имя</th>
+              <th>Email</th>
+              <th>Оценка</th>
+            </tr>
+          </thead>
+          <tbody id="membersList"></tbody>
+        </table>
+        <button id="saveGradesBtn" class="btn primary-btn">Сохранить оценки</button>
+      </div>
+    </div>
     <!-- Модальное окно добавления кружка -->
     <div id="addCircleModal" class="modal">
         <div class="modal-content">
