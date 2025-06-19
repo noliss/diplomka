@@ -1,5 +1,17 @@
 // script.js
 
+function formatRussianDate(isoDate) {
+  const date = new Date(isoDate);
+
+  const day = date.getDate();
+  const month = date.toLocaleString("ru", { month: "long" });
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${day} ${month} ${year} г., ${hours}:${minutes}`;
+}
+
 const takeImageByType = (type) => {
   switch (type) {
     case "SPORT":
@@ -39,15 +51,44 @@ const takeCategoryByType = (type) => {
   }
 };
 
+const getLastGrades = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `http://localhost:5000/api/user/me/ratings/latest`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Преобразуем ответ в JSON
+      showToast(errorData.message, "error");
+      return;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch {
+    console.error("Error:", error); // Обрабатываем ошибку
+  }
+};
+
 const deleteCircle = async (circleId, showToast) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:5000/api/admin/clubs/${circleId}/delete`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/admin/clubs/${circleId}/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json(); // Преобразуем ответ в JSON
@@ -61,7 +102,7 @@ const deleteCircle = async (circleId, showToast) => {
   } catch (error) {
     console.error("Error:", error); // Обрабатываем ошибку
   }
-}
+};
 
 const createNewCircle = async (circleData, showToast) => {
   try {
@@ -494,7 +535,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="stat-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="stat-number">${currentUser.stats.grades}</div>
+                    <div class="stat-number">${
+                      currentUser.grades.length > 0
+                        ? (
+                            currentUser.grades.reduce(
+                              (sum, item) => sum + item.value,
+                              0
+                            ) / currentUser.grades.length
+                          ).toFixed(1)
+                        : "Нет оценок"
+                    }</div>
                     <div class="stat-title">Средний балл</div>
                 </div>
             </div>
@@ -619,7 +669,7 @@ document.addEventListener("DOMContentLoaded", function () {
       circlesGrid.appendChild(circleCard);
     });
 
-    if (currentUser.role === 'Администратор') {
+    if (currentUser.role === "Администратор") {
       document.querySelectorAll(".delete-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           const circleId = e.currentTarget.dataset.circleId;
@@ -675,9 +725,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Генерация сетки оценок
-  function generateGradesGrid() {
+  async function generateGradesGrid() {
     const gradesContainer = document.getElementById("gradesContainer");
     if (!gradesContainer) return;
+
+    const lastGrades = await getLastGrades();
+
+    currentUser.grades = lastGrades.ratings.map((item) => {
+      return {
+        id: item.date + item.clubName,
+        subject: item.clubName,
+        value: item.rating,
+        date: item.date,
+        comment: item.comment,
+      };
+    });
 
     gradesContainer.innerHTML = "";
 
@@ -687,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
       gradeCard.innerHTML = `
                 <div class="grade-header">
                     <h4>${grade.subject}</h4>
-                    <span>${grade.date}</span>
+                    <span>${formatRussianDate(grade.date)}</span>
                 </div>
                 <div class="grade-value">${grade.value}</div>
                 <div class="grade-comment">${grade.comment}</div>
@@ -971,7 +1033,9 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${takeCategoryByType(circle.type)}</td>
               <td>${circle.members_count}</td>
               <td>
-                <button class="btn view-members-btn" data-circle-id="${circle.id}">
+                <button class="btn view-members-btn" data-circle-id="${
+                  circle.id
+                }">
                   Просмотреть участников
                 </button>
               </td>
@@ -1022,14 +1086,23 @@ document.addEventListener("DOMContentLoaded", function () {
       membersList.innerHTML = members
         .map(
           (member) => `
-      <tr data-user-id="${member.id}">
-        <td>${member.name}</td>
-        <td>${member.email}</td>
-        <td>
-          <input type="number" min="0" max="100" value="${member.grade || 0}">
-        </td>
-      </tr>
-    `
+  <tr data-user-id="${member.id}">
+    <td>${member.name}</td>
+    <td>${member.email}</td>
+    <td>
+      <select class="rating-select">
+        <option value="1" ${member.grade === 1 ? "selected" : ""}>1</option>
+        <option value="2" ${member.grade === 2 ? "selected" : ""}>2</option>
+        <option value="3" ${member.grade === 3 ? "selected" : ""}>3</option>
+        <option value="4" ${member.grade === 4 ? "selected" : ""}>4</option>
+        <option value="5" ${member.grade === 5 ? "selected" : ""}>5</option>
+      </select>
+    </td>
+    <td><input type="text" class="rating-comment" value="${
+      member.comment || ""
+    }" /></td>
+  </tr>
+`
         )
         .join("");
 
@@ -1048,7 +1121,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll("#membersList tr").forEach((row) => {
           grades.push({
             userId: row.dataset.userId,
-            grade: row.querySelector("input").value,
+            grade: row.querySelector(".rating-select").value, // значение из select
+            comment: row.querySelector(".rating-comment").value, // значение из input
           });
         });
 

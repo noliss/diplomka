@@ -10,4 +10,7 @@ router.post('/update-info', authenticateToken, validateUpdateInfo, upload.single
 
 router.get('/profile', authenticateToken, userController.profile)
 
+// Получение оценок текущего пользователя
+router.get('/me/ratings/latest', authenticateToken, userController.getMyLatestRatings);
+
 module.exports = router;

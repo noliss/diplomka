@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models/db');
 const { handleValidationErrors, getVerifyTokenInfo } = require('../utils/helpers');
+const userRatingModel = require('../models/UserRatingModel')
 
 // Обновление информации о пользователе 
 exports.updateUser = async (req, res) => {
@@ -97,3 +98,24 @@ exports.profile = (req, res) => {
     return res.status(500).json([{ message: 'Ошибка сервера' }])
   }
 }
+
+
+exports.getMyLatestRatings = async (req, res) => {
+  try {
+    // Получаем ID пользователя из токена (добавляется middleware authenticateToken)
+    const userId = req.user.id;
+    
+    const ratings = await userRatingModel.getLatestUserRatings(userId);
+    
+    res.json({
+      success: true,
+      ratings
+    });
+  } catch (error) {
+    console.error('Ошибка при получении оценок:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка при получении ваших оценок'
+    });
+  }
+};

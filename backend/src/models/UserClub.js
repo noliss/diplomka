@@ -74,14 +74,23 @@ const UserClub = {
           u.id, 
           u.username as name, 
           u.email, 
-          uc.rating as grade
+          uc.rating as grade,
+          uc.raring_desc as comment
         FROM user_clubs uc
         JOIN users u ON uc.user_id = u.id
         WHERE uc.club_id = ?`,
         [clubId],
         (err, rows) => {
-          if (err) reject(err);
-          else resolve(rows || []);
+          if (err) {
+            reject(err);
+          } else {
+            // Преобразуем null в undefined для consistency
+            const members = rows.map(row => ({
+              ...row,
+              comment: row.comment || undefined
+            }));
+            resolve(members || []);
+          }
         }
       );
     });
@@ -90,40 +99,41 @@ const UserClub = {
   // Обновить оценки участников
   updateGrades: (clubId, grades) => {
     return new Promise((resolve, reject) => {
-      // Начинаем транзакцию для массового обновления
       db.serialize(() => {
+        // Начинаем транзакцию для атомарности
         db.run("BEGIN TRANSACTION");
 
-        const stmt = db.prepare(
-          "UPDATE user_clubs SET rating = ? WHERE club_id = ? AND user_id = ?"
-        );
+        try {
+          // Подготавливаем запрос
+          const stmt = db.prepare(
+            `UPDATE user_clubs 
+             SET rating = ?, raring_desc = ? 
+             WHERE user_id = ? AND club_id = ?`
+          );
 
-        grades.forEach((grade) => {
-          stmt.run([grade.grade, clubId, grade.userId]);
-        });
+          // Выполняем для каждой оценки
+          grades.forEach((grade) => {
+            stmt.run(
+              [grade.grade, grade.comment || null, grade.userId, clubId],
+              (err) => {
+                if (err) throw err;
+              }
+            );
+          });
 
-        stmt.finalize((err) => {
-          if (err) {
-            db.run("ROLLBACK");
-            reject(err);
-          } else {
-            db.run("COMMIT", (err) => {
-              if (err) reject(err);
-              else resolve();
-            });
-          }
-        });
+          // Завершаем транзакцию
+          stmt.finalize();
+          db.run("COMMIT", (err) => {
+            if (err) throw err;
+            resolve();
+          });
+        } catch (error) {
+          db.run("ROLLBACK");
+          reject(error);
+        }
       });
     });
   },
-  deleteClub: (clubId) => {
-    return new Promise((resolve, reject) => {
-    db.run('DELETE FROM clubs WHERE id = ?', [clubId], function(err) {
-      if (err) reject(err);
-      resolve(this.changes);
-    });
-  });
-  }
 };
 
 module.exports = UserClub;
